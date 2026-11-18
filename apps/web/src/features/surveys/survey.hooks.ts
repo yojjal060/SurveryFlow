@@ -40,3 +40,25 @@ export function usePublication(id: string) {
     }
   });
 }
+
+export function useSurvey(id: string) {
+  return useQuery({
+    queryKey: ["survey", id],
+    queryFn: () => api<Survey>(`/surveys/${id}`)
+  });
+}
+
+export function useSaveSurvey(id: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (schema: Survey["schema"]) =>
+      api<Survey>(`/surveys/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ schema })
+      }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["survey", id] });
+      void queryClient.invalidateQueries({ queryKey: ["surveys"] });
+    }
+  });
+}

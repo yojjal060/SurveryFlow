@@ -10,6 +10,8 @@ import { LoadingState } from "@/components/common/LoadingState";
 import { DashboardPage } from "@/features/surveys/DashboardPage";
 import { SurveyListPage } from "@/features/surveys/SurveyListPage";
 import { CreateSurveyPage } from "@/features/surveys/CreateSurveyPage";
+import { BuilderPage } from "@/features/survey-builder/BuilderPage";
+import { PublicSurveyPage } from "@/features/survey-response/PublicSurveyPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,12 +35,12 @@ export default function App() {
                   <Route path="/surveys" element={<SurveyListPage />} />
                   <Route path="/settings" element={<PlaceholderPage title="Settings" />} />
                   <Route path="/surveys/new" element={<CreateSurveyPage />} />
-                  <Route path="/surveys/:id/edit" element={<PlaceholderPage title="Survey Builder" />} />
+                  <Route path="/surveys/:id/edit" element={<BuilderPage />} />
                   <Route path="/surveys/:id/analytics" element={<PlaceholderPage title="Analytics" />} />
                   <Route path="/surveys/:id/responses" element={<PlaceholderPage title="Responses" />} />
                 </Route>
               </Route>
-              <Route path="/s/:slug" element={<PlaceholderPage title="Public Survey" />} />
+              <Route path="/s/:slug" element={<PublicSurveyPage />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
           </Suspense>

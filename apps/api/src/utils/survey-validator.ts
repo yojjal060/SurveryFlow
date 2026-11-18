@@ -30,12 +30,32 @@ export const surveySchemaDefinition = z.object({
     }
   }
 
-  for (const question of schema.questions) {
-    if (question.condition && !questionIds.has(question.condition.questionId)) {
+  for (let index = 0; index < schema.questions.length; index += 1) {
+    const question = schema.questions[index];
+    if (!question) continue;
+    if (!question.condition) continue;
+
+    const sourceIndex = schema.questions.findIndex(
+      (candidate) => candidate.id === question.condition?.questionId
+    );
+    const source = sourceIndex >= 0 ? schema.questions[sourceIndex] : undefined;
+    if (!source || sourceIndex >= index) {
       ctx.addIssue({
         code: "custom",
-        message: `Unknown condition question ID: ${question.condition.questionId}`,
-        path: ["questions"]
+        message: "Condition must reference a previous question",
+        path: ["questions", index, "condition"]
+      });
+    } else if (source.type !== "SINGLE_CHOICE") {
+      ctx.addIssue({
+        code: "custom",
+        message: "Condition source must be a single-choice question",
+        path: ["questions", index, "condition"]
+      });
+    } else if (!source.options?.some((option) => option.value === question.condition?.value)) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Condition answer must match a source option",
+        path: ["questions", index, "condition"]
       });
     }
   }

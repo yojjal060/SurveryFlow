@@ -13,6 +13,8 @@ export const questionSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
   required: z.boolean(),
+  placeholder: z.string().optional(),
+  multiline: z.boolean().optional(),
   options: z.array(z.object({
     id: z.string().min(1),
     label: z.string().min(1),

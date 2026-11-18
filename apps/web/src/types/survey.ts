@@ -1,3 +1,7 @@
+import type { Question } from "@survey-builder/shared";
+
+export type BuilderQuestion = Question;
+
 export interface Survey {
   id: string;
   title: string;
@@ -6,7 +10,7 @@ export interface Survey {
   status: "DRAFT" | "PUBLISHED";
   schema: {
     version: number;
-    questions: unknown[];
+    questions: BuilderQuestion[];
   };
   createdAt: string;
   updatedAt: string;

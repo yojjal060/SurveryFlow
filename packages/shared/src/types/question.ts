@@ -10,6 +10,8 @@ export interface Question {
   title: string;
   description?: string;
   required: boolean;
+  placeholder?: string;
+  multiline?: boolean;
   options?: {
     id: string;
     label: string;
