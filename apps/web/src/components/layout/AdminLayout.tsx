@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const navigation = [
   { label: "Overview", short: "OV", to: "/dashboard" },
-  { label: "My Surveys", short: "MS", to: "/surveys" },
-  { label: "Settings", short: "ST", to: "/settings" }
+  { label: "My Surveys", short: "MS", to: "/surveys" }
 ];
 
 export function AdminLayout() {

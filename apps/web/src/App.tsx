@@ -35,7 +35,6 @@ export default function App() {
                   <Route index element={<Navigate to="/dashboard" replace />} />
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/surveys" element={<SurveyListPage />} />
-                  <Route path="/settings" element={<PlaceholderPage title="Settings" />} />
                   <Route path="/surveys/new" element={<CreateSurveyPage />} />
                   <Route path="/surveys/:id/edit" element={<BuilderPage />} />
                   <Route path="/surveys/:id/analytics" element={<AnalyticsPage />} />

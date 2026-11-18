@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { LoadingState } from "@/components/common/LoadingState";
 import { ErrorState } from "@/components/common/ErrorState";
@@ -24,26 +25,38 @@ export function AnalyticsPage() {
 
   return (
     <div>
-      <PageHeader title="Analytics" description={survey.title} />
+      <div className="mb-7 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+        <PageHeader title="Analytics" description={survey.title} />
+        <Link to={`/surveys/${survey.id}/responses`}>
+          <Button className="border border-neutral-200 bg-white text-neutral-900 shadow-sm">
+            View responses
+          </Button>
+        </Link>
+      </div>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <section className="rounded-lg border border-neutral-200 bg-white p-5">
-          <p className="text-sm text-neutral-500">Total responses</p>
-          <p className="mt-2 text-3xl font-semibold">{analytics.totalResponses}</p>
+        <section className="rounded-xl border border-neutral-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(23,23,23,0.03)]">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-400">Total responses</p>
+          <p className="mt-3 text-3xl font-semibold tracking-tight">{analytics.totalResponses}</p>
         </section>
-        <section className="rounded-lg border border-neutral-200 bg-white p-5">
-          <p className="text-sm text-neutral-500">Status</p>
-          <p className="mt-2 text-xl font-semibold">{survey.status}</p>
-        </section>
-        <section className="rounded-lg border border-neutral-200 bg-white p-5">
-          <p className="text-sm text-neutral-500">Average rating</p>
-          <p className="mt-2 text-3xl font-semibold">
-            {analytics.averageRating === null ? "-" : analytics.averageRating.toFixed(1)}
+        <section className="rounded-xl border border-neutral-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(23,23,23,0.03)]">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-400">Status</p>
+          <p className="mt-3">
+            <span className={`rounded-full px-2.5 py-1 text-sm font-medium ${survey.status === "PUBLISHED" ? "bg-green-100 text-green-700" : "bg-neutral-100 text-neutral-600"}`}>
+              {survey.status}
+            </span>
           </p>
         </section>
-        <section className="rounded-lg border border-neutral-200 bg-white p-5">
-          <p className="text-sm text-neutral-500">Last response</p>
-          <p className="mt-2 text-base font-semibold">
-            {analytics.lastResponseAt ? new Date(analytics.lastResponseAt).toLocaleString() : "-"}
+        <section className="rounded-xl border border-neutral-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(23,23,23,0.03)]">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-400">Average rating</p>
+          <p className="mt-3 text-3xl font-semibold tracking-tight">
+            {analytics.averageRating === null ? "-" : analytics.averageRating.toFixed(1)}
+            {analytics.averageRating !== null ? <span className="ml-1 text-base text-neutral-400">/ 5</span> : null}
+          </p>
+        </section>
+        <section className="rounded-xl border border-neutral-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(23,23,23,0.03)]">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-400">Last response</p>
+          <p className="mt-3 text-sm font-semibold leading-6">
+            {analytics.lastResponseAt ? new Date(analytics.lastResponseAt).toLocaleDateString() : "-"}
           </p>
         </section>
       </div>
@@ -52,21 +65,33 @@ export function AnalyticsPage() {
           <EmptyState title="No responses yet" description="Submit a public response to see analytics." />
         </div>
       ) : (
-        <div className="mt-6 space-y-4">
-          {analytics.questions.map((result) => {
+        <div className="mt-7 grid items-start gap-5 xl:grid-cols-2">
+          {analytics.questions.map((result, index) => {
             const question = questions.find((item) => item.id === result.questionId);
             return (
-              <section key={result.questionId} className="rounded-lg border border-neutral-200 bg-white p-5">
-                <h2 className="font-medium">{question?.title ?? result.questionId}</h2>
-                <p className="mt-1 text-xs uppercase tracking-wide text-neutral-500">{result.type.replaceAll("_", " ")}</p>
-                <div className="mt-4">
+              <section key={result.questionId} className={`overflow-hidden rounded-xl border border-neutral-200/80 bg-white shadow-[0_1px_2px_rgba(23,23,23,0.03)] ${result.type === "TEXT" ? "xl:col-span-2" : ""}`}>
+                <header className="flex items-start justify-between gap-4 border-b border-neutral-100 px-5 py-4">
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium text-neutral-400">QUESTION {index + 1}</p>
+                    <h2 className="mt-1 font-semibold">{question?.title ?? result.questionId}</h2>
+                  </div>
+                  <span className="shrink-0 rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-neutral-500">
+                    {result.type.replaceAll("_", " ")}
+                  </span>
+                </header>
+                <div className="p-5">
                   {result.type === "TEXT" ? (
                     result.answers?.length ? (
-                      <ul className="divide-y divide-neutral-100">
+                      <div className="grid gap-3 md:grid-cols-2">
                         {result.answers.map((answer, index) => (
-                          <li key={`${index}-${answer}`} className="py-3 text-sm">{answer}</li>
+                          <blockquote
+                            key={`${index}-${answer}`}
+                            className="rounded-xl border border-neutral-200 bg-neutral-50/60 px-4 py-3 text-sm leading-6 text-neutral-700"
+                          >
+                            “{answer}”
+                          </blockquote>
                         ))}
-                      </ul>
+                      </div>
                     ) : <p className="text-sm text-neutral-500">No text answers.</p>
                   ) : null}
                   {result.type === "SINGLE_CHOICE" || result.type === "MULTIPLE_CHOICE" ? (

@@ -14,14 +14,25 @@ export function ChoiceChart({
 
   return (
     <div>
-      <div className="h-64">
+      <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 8, right: 8, bottom: 8, left: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="label" />
-            <YAxis allowDecimals={false} />
-            <Tooltip formatter={(value, name) => [value, name === "count" ? "Responses" : name]} />
-            <Bar dataKey="count" fill="#171717" radius={[4, 4, 0, 0]} />
+          <BarChart data={data} layout="vertical" margin={{ top: 4, right: 24, bottom: 4, left: 8 }}>
+            <CartesianGrid stroke="#e5e5e5" strokeDasharray="3 3" horizontal={false} />
+            <XAxis type="number" allowDecimals={false} axisLine={false} tickLine={false} tick={{ fill: "#737373", fontSize: 12 }} />
+            <YAxis
+              type="category"
+              dataKey="label"
+              width={110}
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: "#525252", fontSize: 12 }}
+            />
+            <Tooltip
+              cursor={{ fill: "#f5f5f4" }}
+              contentStyle={{ borderRadius: 12, border: "1px solid #e5e5e5", boxShadow: "0 8px 24px rgba(23,23,23,.08)" }}
+              formatter={(value, name) => [value, name === "count" ? "Responses" : name]}
+            />
+            <Bar dataKey="count" fill="#262626" radius={[0, 6, 6, 0]} barSize={22} />
           </BarChart>
         </ResponsiveContainer>
       </div>
