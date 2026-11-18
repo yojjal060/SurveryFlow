@@ -50,17 +50,25 @@ function SurveyRow({ survey }: { survey: Survey }) {
           </Link>
           {survey.status === "PUBLISHED" ? (
             <>
-              <Link to={`/s/${survey.slug}`}>
+              <a
+                href={`/s/${survey.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button className="border border-neutral-300 bg-white text-neutral-900">View public</Button>
-              </Link>
+              </a>
               <Button className="border border-neutral-300 bg-white text-neutral-900" onClick={copyPublicLink}>
                 {copied ? "Link copied" : "Copy link"}
               </Button>
             </>
           ) : null}
-          <Link to={`/surveys/${survey.id}/analytics`}>
+          <a
+            href={`/surveys/${survey.id}/analytics`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button className="border border-neutral-300 bg-white text-neutral-900">Analytics</Button>
-          </Link>
+          </a>
           <Button
             className="border border-neutral-300 bg-white text-neutral-900"
             disabled={publication.isPending}
