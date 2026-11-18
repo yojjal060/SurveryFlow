@@ -12,6 +12,7 @@ Minimal React + Express monorepo boilerplate.
 
 ```bash
 npm install
+npm run dev
 npm run typecheck
 npm run build
 ```

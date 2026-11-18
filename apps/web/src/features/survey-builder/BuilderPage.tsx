@@ -60,6 +60,11 @@ export function BuilderPage() {
 
   const save = async () => {
     setSaveError("");
+    if (surveyQuery.data.status === "PUBLISHED" && !window.confirm(
+      "This survey is published and may already have responses. Saving structural changes can affect existing analytics. Continue?"
+    )) {
+      return;
+    }
     try {
       await saveSurvey.mutateAsync({ version: 1, questions });
       setDirty(false);
@@ -70,6 +75,11 @@ export function BuilderPage() {
 
   const publish = async () => {
     setSaveError("");
+    if (surveyQuery.data.status === "PUBLISHED" && !window.confirm(
+      "This survey is already published and may have responses. Continue with the structural changes?"
+    )) {
+      return;
+    }
     try {
       await saveSurvey.mutateAsync({ version: 1, questions });
       await publication.mutateAsync(true);
