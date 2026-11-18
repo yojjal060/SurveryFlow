@@ -1,17 +1,22 @@
-import cors from "cors";
-import express from "express";
-import { env } from "./env.js";
+import http from "node:http";
+import { app } from "./app.js";
+import { prisma } from "./config/database.js";
+import { env } from "./config/env.js";
 
-const app = express();
+const server = http.createServer(app);
 
-app.disable("x-powered-by");
-app.use(cors({ origin: env.CORS_ORIGIN }));
-app.use(express.json());
+void prisma.$connect();
 
-app.get("/health", (_req, res) => {
-  res.status(200).json({ status: "ok" });
-});
-
-app.listen(env.PORT, () => {
+server.listen(env.PORT, () => {
   console.log(`Survey Builder API listening on port ${env.PORT}`);
 });
+
+const shutdown = (signal: string) => {
+  console.log(`${signal} received`);
+  server.close(() => {
+    void prisma.$disconnect().finally(() => process.exit(0));
+  });
+};
+
+process.once("SIGINT", () => shutdown("SIGINT"));
+process.once("SIGTERM", () => shutdown("SIGTERM"));

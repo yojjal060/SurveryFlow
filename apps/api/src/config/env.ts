@@ -1,5 +1,19 @@
 import { z } from "zod";
 
+const loadEnvFile = (process as NodeJS.Process & {
+  loadEnvFile?: (path?: string) => void;
+}).loadEnvFile;
+
+if (loadEnvFile) {
+  for (const path of [".env", "../../.env.local", "../../.env"]) {
+    try {
+      loadEnvFile(path);
+    } catch {
+      // Continue when an optional environment file does not exist.
+    }
+  }
+}
+
 const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(3001),
   CORS_ORIGIN: z.string().default("http://localhost:5173"),
