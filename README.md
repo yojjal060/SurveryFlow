@@ -20,6 +20,63 @@ and backend analytics.
 | ORM | Prisma |
 | API documentation | Swagger / OpenAPI |
 
+## Architecture
+
+```text
+Browser
+  |
+  | HTTPS
+  v
+React SPA (Vercel)
+  |
+  | JSON / HTTP
+  v
+Express API (Render)
+  |
+  | Prisma / PostgreSQL
+  v
+Neon PostgreSQL
+```
+
+### Request flow
+
+1. The React application calls the Express API through `VITE_API_URL`.
+2. Express validates request data, applies authentication middleware, and delegates database work
+   to Prisma services.
+3. Public requests fetch published surveys and submit responses.
+4. Admin requests require a JWT or HTTP-only cookie.
+5. Prisma reads and writes PostgreSQL tables hosted by Neon.
+6. Analytics are aggregated by the backend, not calculated from every response in React.
+
+### Key architecture decisions
+
+- **Monorepo:** npm workspaces keep the frontend, backend, and shared contracts in one repository
+  while allowing independent builds.
+- **Prisma:** Prisma provides typed PostgreSQL access, migrations, and one schema as the database
+  source of truth.
+- **Neon:** Neon is used as the managed PostgreSQL provider so the application does not need a
+  separate Azure or AWS database service.
+- **Vercel + Render:** Vercel hosts the static SPA and Render hosts the stateful Node API. This
+  separation is simple and matches the assignment's frontend/backend architecture.
+- **Shared Zod schemas:** Shared packages keep question and response contracts consistent across
+  the TypeScript workspace.
+- **Backend validation:** Public response validation happens on the server because browser
+  validation can be bypassed.
+
+
+## Assumptions and trade-offs
+
+- The application supports one simple admin account rather than organizations or role hierarchies.
+- Refresh-token rotation and enterprise session management are intentionally out of scope.
+- JWT storage and HTTP-only cookie support provide useful flexibility, but production deployments
+  should make a final choice and avoid exposing the same session in both localStorage and cookies.
+- The survey JSON schema is stored in PostgreSQL's `Json` column. This is flexible for rapid
+  iteration, but less normalized than separate Question and Option tables.
+- Reordering and structural changes are saved explicitly rather than with autosave to reduce
+  race conditions and accidental writes.
+- Render's Free service can spin down after inactivity, creating cold-start delay.
+
+
 ## Repository structure
 
 ```text
@@ -87,14 +144,7 @@ npm run db:migrate --workspace=@survey-builder/api
 npm run db:deploy --workspace=@survey-builder/api
 ```
 
-## Environment
 
-Use one repository-level `.env.local` for actual local values.
-Use `.env.example` as the safe setup template. App-local `.env` files are not required.
 
-Never commit `.env.local`, database credentials, JWT secrets, Neon credentials, or other secrets.
 
-## Documentation
 
-- [Requirements](/docs/REQUIREMENTS.md)
-- [Deployment](/docs/deployment.md)
