@@ -4,6 +4,12 @@ export type QuestionType =
   | "MULTIPLE_CHOICE"
   | "RATING";
 
+export interface Condition {
+  questionId: string;
+  operator: "EQUALS";
+  value: string;
+}
+
 export interface Question {
   id: string;
   type: QuestionType;
@@ -17,9 +23,5 @@ export interface Question {
     label: string;
     value: string;
   }[];
-  condition?: {
-    questionId: string;
-    operator: "EQUALS";
-    value: string;
-  };
+  condition?: Condition;
 }

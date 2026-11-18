@@ -47,7 +47,11 @@ export async function getAnalytics(surveyId: string, textPage: number, textPageS
         average: ratings.length
           ? Number((ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length).toFixed(2))
           : 0,
-        totalRatings: ratings.length
+        totalRatings: ratings.length,
+        distribution: [1, 2, 3, 4, 5].map((rating) => ({
+          rating,
+          count: ratings.filter((answer) => answer === rating).length
+        }))
       };
     }
 
@@ -66,5 +70,20 @@ export async function getAnalytics(surveyId: string, textPage: number, textPageS
     };
   });
 
-  return { totalResponses: responses.length, questions };
+  const allRatings = responses.flatMap((response) => {
+    const answers = response.answers as Record<string, unknown>;
+    return schema.questions
+      .filter((question) => question.type === "RATING")
+      .map((question) => answers[question.id])
+      .filter((answer): answer is number => typeof answer === "number");
+  });
+
+  return {
+    totalResponses: responses.length,
+    averageRating: allRatings.length
+      ? Number((allRatings.reduce((sum, rating) => sum + rating, 0) / allRatings.length).toFixed(2))
+      : null,
+    lastResponseAt: responses[0]?.submittedAt ?? null,
+    questions
+  };
 }

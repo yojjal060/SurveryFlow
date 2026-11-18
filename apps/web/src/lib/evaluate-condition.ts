@@ -1,4 +1,8 @@
-import type { Condition } from "@survey-builder/shared";
+export interface Condition {
+  questionId: string;
+  operator: "EQUALS";
+  value: string;
+}
 
 export function evaluateCondition(
   condition: Condition,

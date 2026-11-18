@@ -12,6 +12,8 @@ import { SurveyListPage } from "@/features/surveys/SurveyListPage";
 import { CreateSurveyPage } from "@/features/surveys/CreateSurveyPage";
 import { BuilderPage } from "@/features/survey-builder/BuilderPage";
 import { PublicSurveyPage } from "@/features/survey-response/PublicSurveyPage";
+import { AnalyticsPage } from "@/features/analytics/AnalyticsPage";
+import { ResponseList } from "@/features/analytics/ResponseList";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,8 +38,8 @@ export default function App() {
                   <Route path="/settings" element={<PlaceholderPage title="Settings" />} />
                   <Route path="/surveys/new" element={<CreateSurveyPage />} />
                   <Route path="/surveys/:id/edit" element={<BuilderPage />} />
-                  <Route path="/surveys/:id/analytics" element={<PlaceholderPage title="Analytics" />} />
-                  <Route path="/surveys/:id/responses" element={<PlaceholderPage title="Responses" />} />
+                  <Route path="/surveys/:id/analytics" element={<AnalyticsPage />} />
+                  <Route path="/surveys/:id/responses" element={<ResponseList />} />
                 </Route>
               </Route>
               <Route path="/s/:slug" element={<PublicSurveyPage />} />
