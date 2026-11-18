@@ -1,45 +1,49 @@
 import { Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { AuthProvider } from "@/features/auth/AuthProvider";
+import { ProtectedRoute } from "@/components/common/ProtectedRoute";
+import { AdminLayout } from "@/components/layout/AdminLayout";
+import { LoginPage } from "@/features/auth/LoginPage";
+import { PlaceholderPage } from "@/components/common/PlaceholderPage";
+import { LoadingState } from "@/components/common/LoadingState";
+import { DashboardPage } from "@/features/surveys/DashboardPage";
+import { SurveyListPage } from "@/features/surveys/SurveyListPage";
+import { CreateSurveyPage } from "@/features/surveys/CreateSurveyPage";
 
-const queryClient = new QueryClient();
-
-function ApplicationShell() {
-  return (
-    <main className="min-h-screen bg-neutral-50">
-      <header className="border-b border-neutral-200 bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link className="font-semibold text-neutral-950" to="/">
-            Survey Builder
-          </Link>
-          <span className="text-sm text-neutral-500">Boilerplate</span>
-        </div>
-      </header>
-      <section className="mx-auto max-w-5xl px-6 py-16">
-        <h1 className="text-3xl font-semibold tracking-tight">Survey Builder</h1>
-        <p className="mt-3 max-w-xl text-neutral-600">
-          React application shell. Survey features are not implemented yet.
-        </p>
-        <Button className="mt-6" disabled>
-          Placeholder
-        </Button>
-      </section>
-    </main>
-  );
-}
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: 1, staleTime: 30_000 },
+    mutations: { retry: false }
+  }
+});
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Suspense fallback={<div className="p-6">Loading...</div>}>
-          <Routes>
-            <Route path="/" element={<ApplicationShell />} />
-            <Route path="*" element={<ApplicationShell />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Suspense fallback={<LoadingState label="Loading SurveyFlow..." />}>
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route element={<ProtectedRoute />}>
+                <Route element={<AdminLayout />}>
+                  <Route index element={<Navigate to="/dashboard" replace />} />
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/surveys" element={<SurveyListPage />} />
+                  <Route path="/settings" element={<PlaceholderPage title="Settings" />} />
+                  <Route path="/surveys/new" element={<CreateSurveyPage />} />
+                  <Route path="/surveys/:id/edit" element={<PlaceholderPage title="Survey Builder" />} />
+                  <Route path="/surveys/:id/analytics" element={<PlaceholderPage title="Analytics" />} />
+                  <Route path="/surveys/:id/responses" element={<PlaceholderPage title="Responses" />} />
+                </Route>
+              </Route>
+              <Route path="/s/:slug" element={<PlaceholderPage title="Public Survey" />} />
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

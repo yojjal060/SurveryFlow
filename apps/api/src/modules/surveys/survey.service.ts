@@ -32,7 +32,10 @@ export async function createSurvey(title: string, description: string) {
 }
 
 export async function listSurveys() {
-  return prisma.survey.findMany({ orderBy: { updatedAt: "desc" } });
+  return prisma.survey.findMany({
+    orderBy: { updatedAt: "desc" },
+    include: { _count: { select: { responses: true } } }
+  });
 }
 
 export async function getSurvey(id: string) {
