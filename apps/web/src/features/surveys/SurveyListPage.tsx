@@ -15,6 +15,7 @@ import type { Survey } from "@/types/survey";
 function SurveyRow({ survey }: { survey: Survey }) {
   const publication = usePublication(survey.id);
   const deletion = useDeleteSurvey();
+  const [copied, setCopied] = useState(false);
 
   const remove = () => {
     if (window.confirm(`Delete "${survey.title}"?`)) {
@@ -24,6 +25,8 @@ function SurveyRow({ survey }: { survey: Survey }) {
 
   const copyPublicLink = async () => {
     await navigator.clipboard.writeText(`${window.location.origin}/s/${survey.slug}`);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -51,7 +54,7 @@ function SurveyRow({ survey }: { survey: Survey }) {
                 <Button className="border border-neutral-300 bg-white text-neutral-900">View public</Button>
               </Link>
               <Button className="border border-neutral-300 bg-white text-neutral-900" onClick={copyPublicLink}>
-                Copy link
+                {copied ? "Link copied" : "Copy link"}
               </Button>
             </>
           ) : null}

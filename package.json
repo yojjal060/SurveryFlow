@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "concurrently --names \"api,web\" --prefix-colors \"blue,magenta\" \"npm run dev --workspace=@survey-builder/api\" \"npm run dev --workspace=@survey-builder/web\"",
     "test": "npm run test --workspace=@survey-builder/api",
+    "db:seed": "npm run db:seed --workspace=@survey-builder/api",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "build": "npm run build --workspaces --if-present",
     "clean": "npm run clean --workspaces --if-present"
