@@ -3,7 +3,7 @@ services:
     name: survey-builder-api
     runtime: node
     plan: free
-    buildCommand: npm ci && npm run db:generate --workspace=@survey-builder/api && npm run build --workspace=@survey-builder/shared && npm run build --workspace=@survey-builder/api
+    buildCommand: npm ci --include=dev && npm run db:generate --workspace=@survey-builder/api && npm run build --workspace=@survey-builder/shared && npm run build --workspace=@survey-builder/api
     startCommand: npm run start --workspace=@survey-builder/api
     healthCheckPath: /api/health
     envVars:
