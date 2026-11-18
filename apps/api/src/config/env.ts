@@ -1,16 +1,27 @@
 import { z } from "zod";
+import fs from "node:fs";
+import path from "node:path";
 
 const loadEnvFile = (process as NodeJS.Process & {
   loadEnvFile?: (path?: string) => void;
 }).loadEnvFile;
 
 if (loadEnvFile) {
-  for (const path of [".env", "../../.env.local", "../../.env"]) {
-    try {
-      loadEnvFile(path);
-    } catch {
-      // Continue when an optional environment file does not exist.
+  let directory = process.cwd();
+  for (;;) {
+    for (const filename of [".env.local", ".env"]) {
+      const envPath = path.join(directory, filename);
+      if (fs.existsSync(envPath)) {
+        try {
+          loadEnvFile(envPath);
+        } catch {
+          // Continue to platform environment variables.
+        }
+      }
     }
+    const parent = path.dirname(directory);
+    if (parent === directory) break;
+    directory = parent;
   }
 }
 

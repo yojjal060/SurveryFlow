@@ -38,7 +38,8 @@ project-plan.md
 requirements.json
 manifest.json
 theme.css
-
+docs/
+seed.ts
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
