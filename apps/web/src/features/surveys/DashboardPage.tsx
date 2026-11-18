@@ -31,7 +31,7 @@ export function DashboardPage() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between gap-4">
+      <div className="mb-7 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
         <PageHeader title="Overview" description="Survey workspace summary" />
         <Link to="/surveys/new">
           <Button>Create Survey</Button>
@@ -39,15 +39,16 @@ export function DashboardPage() {
       </div>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map((card) => (
-          <section key={card.label} className="rounded-lg border border-neutral-200 bg-white p-5">
-            <p className="text-sm text-neutral-500">{card.label}</p>
-            <p className="mt-2 text-3xl font-semibold">{card.value}</p>
+          <section key={card.label} className="rounded-xl border border-neutral-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(23,23,23,0.03)]">
+            <p className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-400">{card.label}</p>
+            <p className="mt-3 text-3xl font-semibold tracking-tight">{card.value}</p>
           </section>
         ))}
       </div>
-      <section className="mt-6 rounded-lg border border-neutral-200 bg-white">
-        <div className="border-b border-neutral-200 px-5 py-4">
-          <h2 className="font-medium">Recent surveys</h2>
+      <section className="mt-6 overflow-hidden rounded-xl border border-neutral-200/80 bg-white shadow-[0_1px_2px_rgba(23,23,23,0.03)]">
+        <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
+          <h2 className="font-semibold">Recent surveys</h2>
+          <Link to="/surveys" className="text-sm font-medium text-neutral-500 hover:text-neutral-950">View all</Link>
         </div>
         {surveys.length === 0 ? (
           <div className="p-5">

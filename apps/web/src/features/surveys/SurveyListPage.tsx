@@ -30,7 +30,7 @@ function SurveyRow({ survey }: { survey: Survey }) {
   };
 
   return (
-    <article className="border-b border-neutral-200 p-5 last:border-0">
+    <article className="border-b border-neutral-100 p-5 transition-colors hover:bg-neutral-50/70 last:border-0">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
@@ -105,7 +105,7 @@ export function SurveyListPage() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between gap-4">
+      <div className="mb-7 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
         <PageHeader title="My Surveys" description="Search and manage your surveys." />
         <Link to="/surveys/new">
           <Button>Create Survey</Button>
@@ -116,19 +116,19 @@ export function SurveyListPage() {
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search by title"
-          className="h-10 min-w-0 flex-1 rounded-md border border-neutral-300 bg-white px-3"
+          className="h-11 min-w-0 flex-1 rounded-lg border border-neutral-200 bg-white px-3.5 shadow-sm"
         />
         <select
           value={status}
           onChange={(event) => setStatus(event.target.value)}
-          className="h-10 rounded-md border border-neutral-300 bg-white px-3"
+          className="h-11 rounded-lg border border-neutral-200 bg-white px-3.5 shadow-sm"
         >
           <option value="ALL">All statuses</option>
           <option value="DRAFT">Draft</option>
           <option value="PUBLISHED">Published</option>
         </select>
       </div>
-      <section className="rounded-lg border border-neutral-200 bg-white">
+      <section className="overflow-hidden rounded-xl border border-neutral-200/80 bg-white shadow-[0_1px_2px_rgba(23,23,23,0.03)]">
         {surveys.length === 0 ? (
           <div className="p-5">
             <EmptyState

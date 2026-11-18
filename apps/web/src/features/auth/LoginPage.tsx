@@ -34,10 +34,15 @@ export function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-neutral-50 px-6">
-      <form onSubmit={handleSubmit(submit)} className="w-full max-w-sm rounded-lg border border-neutral-200 bg-white p-6 shadow-sm">
-        <h1 className="text-xl font-semibold">SurveyFlow</h1>
-        <p className="mt-1 text-sm text-neutral-500">Sign in to manage surveys</p>
+    <main className="flex min-h-screen items-center justify-center bg-[#f7f7f5] px-6 py-12">
+      <form onSubmit={handleSubmit(submit)} className="w-full max-w-md rounded-2xl border border-neutral-200/80 bg-white p-7 shadow-[0_20px_60px_rgba(23,23,23,0.08)] sm:p-9">
+        <div className="mb-8 flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-950 text-xs font-semibold text-white">SF</div>
+          <div>
+            <h1 className="text-xl font-semibold tracking-tight">SurveyFlow</h1>
+            <p className="text-sm text-neutral-500">Admin workspace</p>
+          </div>
+        </div>
         {error ? <div className="mt-4"><ErrorState message={error} /></div> : null}
         <label className="mt-6 block text-sm font-medium">
           Email

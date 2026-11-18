@@ -20,7 +20,7 @@ export function SortableQuestion({
     <article
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={`rounded-lg border bg-white p-4 ${selected ? "border-neutral-900 ring-1 ring-neutral-900" : "border-neutral-200"} ${isDragging ? "opacity-60" : ""}`}
+      className={`rounded-xl border bg-white p-4 shadow-[0_2px_10px_rgba(23,23,23,0.025)] ${selected ? "border-neutral-900 ring-1 ring-neutral-900" : "border-neutral-200"} ${isDragging ? "opacity-60" : ""}`}
       onClick={onSelect}
     >
       <div className="flex items-start gap-3">

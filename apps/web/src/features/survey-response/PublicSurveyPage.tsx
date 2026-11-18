@@ -88,9 +88,9 @@ export function PublicSurveyPage() {
   const progress = visibleCount === 0 ? 0 : Math.round((answeredCount / visibleCount) * 100);
 
   return (
-    <main className="min-h-screen bg-neutral-50 px-4 py-8 sm:px-6">
+    <main className="min-h-screen bg-[#f7f7f5] px-4 py-8 sm:px-6 sm:py-12">
       <div className="mx-auto max-w-2xl">
-        <header className="mb-6 rounded-lg border border-neutral-200 bg-white p-6">
+        <header className="mb-6 rounded-2xl border border-neutral-200/80 bg-white p-6 shadow-[0_8px_30px_rgba(23,23,23,0.04)] sm:p-8">
           <h1 className="text-3xl font-semibold tracking-tight">{survey.title}</h1>
           {survey.description ? <p className="mt-2 text-neutral-600">{survey.description}</p> : null}
           <div className="mt-5 h-2 overflow-hidden rounded-full bg-neutral-100">

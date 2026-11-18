@@ -12,7 +12,7 @@ export function BuilderLayout({
   settingsOpen: boolean;
 }) {
   return (
-    <div className="grid min-h-[calc(100vh-150px)] grid-cols-1 overflow-hidden rounded-lg border border-neutral-200 bg-white lg:grid-cols-[180px_minmax(0,1fr)_320px]">
+    <div className="grid min-h-[calc(100vh-150px)] grid-cols-1 overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-[0_8px_30px_rgba(23,23,23,0.04)] lg:grid-cols-[180px_minmax(0,1fr)_320px]">
       <aside className="hidden border-r border-neutral-200 p-3 lg:block">{toolbar}</aside>
       <main className="min-w-0 overflow-y-auto bg-neutral-50 p-4 sm:p-6">{preview}</main>
       {settingsOpen ? (
